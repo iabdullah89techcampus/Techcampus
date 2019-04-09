@@ -1,0 +1,159 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Data;
+
+public partial class SignUp : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            MultiView1.ActiveViewIndex = 0;
+        }
+        Response.Cache.SetCacheability(HttpCacheability.Public);
+
+    }  SqlConnection conn = new SqlConnection("Data Source=.\\SQLEXPRESS;AttachDbFilename=C:\\Users\\Toshiba\\Desktop\\111\\SaudiTikit\\App_Data\\Database.mdf;Integrated Security=True;User Instance=True");
+   
+
+    protected void btnSignup_Click(object sender, EventArgs e)
+    {
+
+        string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        string insertSql = "INSERT INTO Users (ID,FirstName,LastName,UserName,Password,Email,PhoneNumber) values (@ID,@FirstName,@LastName,@UserName,@Password,@Email,@PhoneNumber)";
+
+        SqlCommand cmd = new SqlCommand();
+        cmd.Connection = conn;
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = insertSql;
+
+        SqlParameter ID = new SqlParameter("@ID", conn);
+        ID.Value = TextBox1.Text.ToString();
+        cmd.Parameters.Add(ID);
+
+        SqlParameter firstName = new SqlParameter("@FirstName", conn);
+        firstName.Value = txtFirstName.Text.ToString();
+        cmd.Parameters.Add(firstName);
+
+
+        SqlParameter lastName = new SqlParameter("@LastName", conn);
+        lastName.Value = txtLastName.Text.ToString();
+        cmd.Parameters.Add(lastName);
+
+        SqlParameter userName = new SqlParameter("@UserName", conn);
+        userName.Value = txtUserName.Text.ToString();
+        cmd.Parameters.Add(userName);
+
+        SqlParameter pwd = new SqlParameter("@Password", conn);
+        pwd.Value = txtPassword.Text.ToString();
+        cmd.Parameters.Add(pwd);
+
+        SqlParameter email = new SqlParameter("@Email", conn);
+        email.Value = txtEmail.Text.ToString();
+        cmd.Parameters.Add(email);
+
+        SqlParameter Phone = new SqlParameter("@PhoneNumber", conn);
+        Phone.Value = txtphone.Text.ToString();
+        cmd.Parameters.Add(Phone);
+
+        try
+        {
+            conn.Open();
+            cmd.ExecuteNonQuery();
+          
+            lbMsg.Text = "تم تسجيل مستخدم جديد ";
+            MultiView1.ActiveViewIndex = 1;
+        }
+        catch (SqlException ex)
+        {
+            string errorMessage = "Error in registring user";
+            errorMessage += ex.Message;
+            // throw new Exception(errorMessage);
+
+        }
+        finally
+        {
+            conn.Close();
+        }
+    }
+
+    public static void ClearControls(Control Parent)
+    {
+        foreach (Control c in Parent.Controls)
+            ClearControls(c);
+    }
+
+
+    protected void txtUserName_TextChanged(object sender, EventArgs e)
+    {
+        if (txtUserName.Text.Length == 0)
+        {
+            availability.Text = "";
+            return;
+        }
+
+        SqlDataAdapter adp = new SqlDataAdapter("select username from Users where UserName='" + txtUserName.Text + "'", conn);
+        DataSet ds = new DataSet();
+        adp.Fill(ds, "Users");
+        if (ds.Tables["Users"].Rows.Count > 0)
+        {
+            availability.ForeColor = System.Drawing.Color.Red;
+            availability.Text = "اسم المستخدم غير متاح";
+        }
+        else
+        {
+            availability.ForeColor = System.Drawing.Color.Green;
+            availability.Text = "اسم المستخدم متاح";
+        }
+    }
+    protected void txtEmail_TextChanged(object sender, EventArgs e)
+    {
+        if (txtUserName.Text.Length == 0)
+        {
+            availability.Text = "";
+            return;
+        }
+
+        SqlDataAdapter adp = new SqlDataAdapter("select username from Users where UserName='" + txtEmail.Text + "'", conn);
+        DataSet ds = new DataSet();
+        adp.Fill(ds, "Users");
+        if (ds.Tables["Users"].Rows.Count > 0)
+        {
+            availability1.ForeColor = System.Drawing.Color.Red;
+            availability1.Text = "الايميل موجود من قبل";
+        }
+        else
+        {
+            availability1.ForeColor = System.Drawing.Color.Green;
+            availability1.Text = "الايميل متاح";
+        }
+
+    }
+    protected void TextBox1_TextChanged(object sender, EventArgs e)
+    {
+         if (txtUserName.Text.Length == 0)
+        {
+            availability.Text = "";
+            return;
+        }
+
+         SqlDataAdapter adp = new SqlDataAdapter("select username from Users where UserName='" + TextBox1.Text + "'", conn);
+        DataSet ds = new DataSet();
+        adp.Fill(ds, "Users");
+        if (ds.Tables["Users"].Rows.Count > 0)
+        {
+            Label1.ForeColor = System.Drawing.Color.Red;
+            Label1.Text = "الهوية موجودة من قبل";
+        }
+        else
+        {
+            Label1.ForeColor = System.Drawing.Color.Green;
+            Label1.Text = "الهوية متاحه";
+        }
+    }
+}
