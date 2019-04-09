@@ -1,0 +1,128 @@
+using System;
+using System.Web;
+using System.Web.Services;
+using System.Web.Services.Protocols;
+using System.ComponentModel;
+
+public class User
+{
+    private string _UserName;
+    private string _Password;
+    private String _Email;
+    private string _PhoneNumer;
+    private string _firstName;
+    private string _lastName;
+
+    public string UserName
+    {
+        get
+        {
+           return _UserName;
+        }
+        set
+        {
+            _UserName = value;
+        }
+    }
+
+    public string PassWord
+    {
+        get
+        {
+           return _Password;
+        }
+        set
+        {
+            _Password = value;
+        }
+    }
+
+    public string Email
+    {
+        get
+        {
+          return _Email;
+        }
+        set
+        {
+            _Email = value;
+        }
+    }
+
+    public string PhoneNumber
+    {
+        get
+        {
+           return _PhoneNumer;
+        }
+        set
+        {
+            _PhoneNumer = value;
+        }
+    }
+
+    public string FirstName
+    {
+        get
+        {
+           return _firstName;
+        }
+        set
+        {
+            _firstName = value;
+        }
+    }
+    public string LastName
+    {
+        get
+        {
+            return _lastName;
+        }
+        set
+        {
+            _lastName = value;
+        }
+    }
+
+    public string EditProfile()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public string EditProfile (string userName, string passWord, string email, string phoneNumber , string firstName , string lastName)
+    {
+        this.UserName = userName;
+        this.PassWord = passWord;
+        this.Email = email;
+        this.PhoneNumber = passWord;
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        return Register();
+    }
+
+    public string Register()
+    {
+        return "";
+       
+    }
+
+    public string Register(string userName, string passWord, string email, string phoneNumber)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool Login()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool Login(string user, string pass)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool ChangePassword(string username, string newpassword)
+    {
+        throw new System.NotImplementedException();
+    }
+}
